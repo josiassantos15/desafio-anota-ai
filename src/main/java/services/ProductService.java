@@ -32,9 +32,9 @@ public class ProductService {
     public Product update(String id, ProductDto productDto) {
         Product product = productRepository.findById(id)
                 .orElseThrow(ProductNotfoundException::new);
-        categoryService.getById(productDto.categoryId())
-                .ifPresent(product::setCategory);
-
+        if (productDto.categoryId() != null)
+            categoryService.getById(productDto.categoryId())
+                    .ifPresent(product::setCategory);
         if (!productDto.title().isEmpty() || !productDto.title().trim().isBlank())
             product.setTitle(productDto.title());
         if (!productDto.description().isEmpty() || !productDto.description().trim().isBlank())
