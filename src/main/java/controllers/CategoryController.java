@@ -2,7 +2,6 @@ package controllers;
 
 import domain.category.Category;
 import domain.category.CategoryDto;
-import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,13 +26,13 @@ public class CategoryController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Category> update(@PathParam("id") String id,
+    public ResponseEntity<Category> update(@PathVariable() String id,
                                            @RequestBody CategoryDto categoryDto) {
         return ResponseEntity.ok(categoryService.update(id, categoryDto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Category> delete(@PathParam("id") String id) {
+    public ResponseEntity<Category> delete(@PathVariable() String id) {
         categoryService.delete(id);
         return ResponseEntity.noContent().build();
     }

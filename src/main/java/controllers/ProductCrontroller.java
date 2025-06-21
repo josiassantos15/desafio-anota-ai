@@ -2,7 +2,6 @@ package controllers;
 
 import domain.product.Product;
 import domain.product.ProductDto;
-import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,13 +26,13 @@ public class ProductCrontroller {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Product> update(@PathParam("id") String id,
+    public ResponseEntity<Product> update(@PathVariable() String id,
                                           @RequestBody ProductDto productDto) {
         return ResponseEntity.ok(productService.update(id, productDto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Product> delete(@PathParam("id") String id) {
+    public ResponseEntity<Product> delete(@PathVariable() String id) {
         productService.delete(id);
         return ResponseEntity.noContent().build();
     }
