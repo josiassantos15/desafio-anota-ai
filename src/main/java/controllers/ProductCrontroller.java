@@ -1,7 +1,5 @@
 package controllers;
 
-import domain.category.Category;
-import domain.category.CategoryDto;
 import domain.product.Product;
 import domain.product.ProductDto;
 import jakarta.websocket.server.PathParam;
@@ -30,7 +28,7 @@ public class ProductCrontroller {
 
     @PutMapping("/{id}")
     public ResponseEntity<Product> update(@PathParam("id") String id,
-                                           @RequestBody ProductDto productDto) {
+                                          @RequestBody ProductDto productDto) {
         return ResponseEntity.ok(productService.update(id, productDto));
     }
 

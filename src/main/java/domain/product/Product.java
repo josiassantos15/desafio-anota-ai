@@ -25,6 +25,5 @@ public class Product {
         this.description = productDto.description();
         this.ownerId = productDto.ownerId();
         this.price = productDto.price();
-        this.category = productDto.category();
     }
 }
