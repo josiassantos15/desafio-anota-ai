@@ -8,6 +8,8 @@ import domain.product.exceptions.ProductNotfoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import repositories.ProductRepository;
+import services.aws.AwsSnsService;
+import services.aws.MessageDto;
 
 import java.util.List;
 
@@ -16,13 +18,17 @@ import java.util.List;
 public class ProductService {
     private final ProductRepository productRepository;
     private final CategoryService categoryService;
+    private final AwsSnsService awsSnsService;
 
     public Product insert(ProductDto productDto) {
         Category category = categoryService.getById(productDto.categoryId())
                 .orElseThrow(CategoryNotFoundException::new);
         Product product = new Product(productDto);
         product.setCategory(category);
-        return productRepository.save(product);
+        Product productSalved = productRepository.save(product);
+        awsSnsService.pubish(new MessageDto(product.getOwnerId()));
+
+        return productSalved;
     }
 
     public List<Product> getAll() {
