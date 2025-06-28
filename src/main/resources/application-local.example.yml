@@ -1,0 +1,24 @@
+server:
+  port: 3333
+spring:
+  application:
+    name: desafio-anota-ai
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/product-catalog
+aws:
+  access-key-id: 123144eqw23
+  secret-key: 2342tqwr3453
+  region: us-east-1
+  sns:
+    topic:
+      catalog:
+        arn: arn:aws:sns:us-east-1:9999999999:catalog-emit
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui
+    url: /v3/api-docs
