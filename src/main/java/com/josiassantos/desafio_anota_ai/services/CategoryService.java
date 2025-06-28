@@ -1,9 +1,9 @@
 package com.josiassantos.desafio_anota_ai.services;
 
+import com.josiassantos.desafio_anota_ai.commons.exceptions.ValidationException;
 import com.josiassantos.desafio_anota_ai.domain.category.Category;
 import com.josiassantos.desafio_anota_ai.domain.category.CategoryDto;
 import com.josiassantos.desafio_anota_ai.repositories.CategoryRepository;
-import com.josiassantos.desafio_anota_ai.domain.category.exceptions.CategoryNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.josiassantos.desafio_anota_ai.services.aws.AwsSnsService;
@@ -36,7 +36,7 @@ public class CategoryService {
 
     public Category update(String id, CategoryDto categoryDto) {
         Category category = categoryRepository.findById(id)
-                .orElseThrow(CategoryNotFoundException::new);
+                .orElseThrow(() -> new ValidationException("Update Category", "Category with id %s not found".formatted(id)));
         if (!categoryDto.title().isEmpty() || !categoryDto.title().trim().isBlank())
             category.setTitle(categoryDto.title());
         if (!categoryDto.description().isEmpty() || !categoryDto.description().trim().isBlank())
@@ -49,7 +49,7 @@ public class CategoryService {
 
     public void delete(String id) {
         Category category = categoryRepository.findById(id)
-                .orElseThrow(CategoryNotFoundException::new);
+                .orElseThrow(() -> new ValidationException("Delete Category", "Category with id %s not found".formatted(id)));
 
         categoryRepository.delete(category);
     }

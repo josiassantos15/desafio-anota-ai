@@ -1,11 +1,10 @@
 package com.josiassantos.desafio_anota_ai.services;
 
+import com.josiassantos.desafio_anota_ai.commons.exceptions.ValidationException;
 import com.josiassantos.desafio_anota_ai.domain.product.Product;
 import com.josiassantos.desafio_anota_ai.domain.product.ProductDto;
-import com.josiassantos.desafio_anota_ai.domain.product.exceptions.ProductNotfoundException;
 import com.josiassantos.desafio_anota_ai.repositories.ProductRepository;
 import com.josiassantos.desafio_anota_ai.services.aws.AwsSnsService;
-import com.josiassantos.desafio_anota_ai.domain.category.exceptions.CategoryNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.josiassantos.desafio_anota_ai.services.aws.MessageDto;
@@ -21,7 +20,8 @@ public class ProductService {
 
     public Product insert(ProductDto productDto) {
         categoryService.getById(productDto.categoryId())
-                .orElseThrow(CategoryNotFoundException::new);
+                .orElseThrow(() -> new ValidationException("Insert Product", "Category with id %s not found"
+                        .formatted(productDto.categoryId())));
         Product product = new Product(productDto);
         Product productSalved = productRepository.save(product);
         awsSnsService.pubish(new MessageDto(product.toString()));
@@ -35,10 +35,11 @@ public class ProductService {
 
     public Product update(String id, ProductDto productDto) {
         Product product = productRepository.findById(id)
-                .orElseThrow(ProductNotfoundException::new);
+                .orElseThrow(() -> new ValidationException("Update Product", "Product with id %s not found".formatted(id)));
         if (productDto.categoryId() != null) {
             categoryService.getById(productDto.categoryId())
-                    .orElseThrow(CategoryNotFoundException::new);
+                    .orElseThrow(() -> new ValidationException("Update Product", "Category with id %s not found"
+                            .formatted(productDto.categoryId())));
             product.setCategory(productDto.categoryId());
         }
         if (!productDto.title().isEmpty() || !productDto.title().trim().isBlank())
@@ -56,7 +57,7 @@ public class ProductService {
 
     public void delete(String id) {
         Product product = productRepository.findById(id)
-                .orElseThrow(CategoryNotFoundException::new);
+                .orElseThrow(() -> new ValidationException("Delete Product", "Product with id %s not found".formatted(id)));
 
         productRepository.delete(product);
     }
