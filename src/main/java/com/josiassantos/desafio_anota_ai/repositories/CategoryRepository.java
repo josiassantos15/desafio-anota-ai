@@ -1,6 +1,6 @@
-package repositories;
+package com.josiassantos.desafio_anota_ai.repositories;
 
-import domain.category.Category;
+import com.josiassantos.desafio_anota_ai.domain.category.Category;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

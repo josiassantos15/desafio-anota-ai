@@ -1,15 +1,14 @@
-package services;
+package com.josiassantos.desafio_anota_ai.services;
 
-import domain.category.Category;
-import domain.category.exceptions.CategoryNotFoundException;
-import domain.product.Product;
-import domain.product.ProductDto;
-import domain.product.exceptions.ProductNotfoundException;
+import com.josiassantos.desafio_anota_ai.domain.product.Product;
+import com.josiassantos.desafio_anota_ai.domain.product.ProductDto;
+import com.josiassantos.desafio_anota_ai.domain.product.exceptions.ProductNotfoundException;
+import com.josiassantos.desafio_anota_ai.repositories.ProductRepository;
+import com.josiassantos.desafio_anota_ai.services.aws.AwsSnsService;
+import com.josiassantos.desafio_anota_ai.domain.category.exceptions.CategoryNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import repositories.ProductRepository;
-import services.aws.AwsSnsService;
-import services.aws.MessageDto;
+import com.josiassantos.desafio_anota_ai.services.aws.MessageDto;
 
 import java.util.List;
 
@@ -21,12 +20,11 @@ public class ProductService {
     private final AwsSnsService awsSnsService;
 
     public Product insert(ProductDto productDto) {
-        Category category = categoryService.getById(productDto.categoryId())
+        categoryService.getById(productDto.categoryId())
                 .orElseThrow(CategoryNotFoundException::new);
         Product product = new Product(productDto);
-        product.setCategory(category);
         Product productSalved = productRepository.save(product);
-        awsSnsService.pubish(new MessageDto(product.getOwnerId()));
+        awsSnsService.pubish(new MessageDto(product.toString()));
 
         return productSalved;
     }
@@ -38,9 +36,11 @@ public class ProductService {
     public Product update(String id, ProductDto productDto) {
         Product product = productRepository.findById(id)
                 .orElseThrow(ProductNotfoundException::new);
-        if (productDto.categoryId() != null)
+        if (productDto.categoryId() != null) {
             categoryService.getById(productDto.categoryId())
-                    .ifPresent(product::setCategory);
+                    .orElseThrow(CategoryNotFoundException::new);
+            product.setCategory(productDto.categoryId());
+        }
         if (!productDto.title().isEmpty() || !productDto.title().trim().isBlank())
             product.setTitle(productDto.title());
         if (!productDto.description().isEmpty() || !productDto.description().trim().isBlank())
@@ -48,7 +48,10 @@ public class ProductService {
         if (productDto.price() != null)
             product.setPrice(productDto.price());
 
-        return productRepository.save(product);
+        Product productSalved = productRepository.save(product);
+        awsSnsService.pubish(new MessageDto(productSalved.toString()));
+
+        return productSalved;
     }
 
     public void delete(String id) {
