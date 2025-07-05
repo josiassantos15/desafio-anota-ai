@@ -7,6 +7,8 @@ import org.json.JSONObject;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -17,7 +19,7 @@ public class Product {
     private String title;
     private String description;
     private String ownerId;
-    private Integer price;
+    private BigDecimal price;
     private String category;
 
     public Product(ProductDto productDto) {

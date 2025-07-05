@@ -4,10 +4,10 @@ import com.josiassantos.desafio_anota_ai.commons.exceptions.ValidationException;
 import com.josiassantos.desafio_anota_ai.domain.category.Category;
 import com.josiassantos.desafio_anota_ai.domain.category.CategoryDto;
 import com.josiassantos.desafio_anota_ai.repositories.CategoryRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import com.josiassantos.desafio_anota_ai.services.aws.AwsSnsService;
 import com.josiassantos.desafio_anota_ai.services.aws.MessageDto;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;

@@ -5,9 +5,9 @@ import com.josiassantos.desafio_anota_ai.domain.product.Product;
 import com.josiassantos.desafio_anota_ai.domain.product.ProductDto;
 import com.josiassantos.desafio_anota_ai.repositories.ProductRepository;
 import com.josiassantos.desafio_anota_ai.services.aws.AwsSnsService;
+import com.josiassantos.desafio_anota_ai.services.aws.MessageDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import com.josiassantos.desafio_anota_ai.services.aws.MessageDto;
 
 import java.util.List;
 
