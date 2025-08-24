@@ -9,8 +9,6 @@
 
 This project is an API built using **Java, Java Spring, AWS Simple Queue Service, Mongo DB and AWS Simple Storage Service.**
 
-The Microservice was developed for my [Youtube Channel](https://youtu.be/a3tPHH8uwPc?si=vFf-S2H5i3IpVTjN), to demonstrate how to solve the [AnotaAi Backend Challenge](https://github.com/githubanotaai/new-test-backend-nodejs).
-
 ## Table of Contents
 
 - [Installation](#installation)
@@ -25,7 +23,7 @@ The Microservice was developed for my [Youtube Channel](https://youtu.be/a3tPHH8
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/Fernanda-Kipper/desafio-anotaai-backend.git
+git clone https://github.com/josiassantos15/desafio-anotaai-backend.git
 ```
 
 2. Install dependencies with Maven
@@ -74,6 +72,7 @@ DELETE /api/product/{id} - Delete a product
 **BODY**
 ```json
 {
+  "id": "765d558b0304df732ddd4436",
   "title": "Produto para postar no tópico",
   "description": "",
   "ownerId": "4444444",
@@ -105,6 +104,3 @@ DELETE /api/category/{id} - Delete a category
 Contributions are welcome! If you find any issues or have suggestions for improvements, please open an issue or submit a pull request to the repository.
 
 When contributing to this project, please follow the existing code style, [commit conventions](https://www.conventionalcommits.org/en/v1.0.0/), and submit your changes in a separate branch.
-
-
-
